@@ -3,7 +3,7 @@ package com.github.raphcal.localserver;
 /**
  * Gestionnaire de base pour les requêtes HTTP.
  *
- * @author Raphaël Calabro <ddaeke-github at yahoo.fr>
+ * @author Raphaël Calabro (ddaeke-github at yahoo.fr)
  */
 public interface HttpRequestHandler {
 

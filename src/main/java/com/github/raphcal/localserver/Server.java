@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Thread gérant l'envoi et la réception de requêtes HTTP.
  *
- * @author Raphaël Calabro <ddaeke-github at yahoo.fr>
+ * @author Raphaël Calabro (ddaeke-github at yahoo.fr)
  */
 class Server implements Runnable {
 

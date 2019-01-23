@@ -9,7 +9,7 @@ import java.nio.charset.Charset;
  * Classe utilitaire pour simplifier l'écriture d'un servlet HTTP utilisable
  * avec LocalServer.
  *
- * @author Raphaël Calabro <ddaeke-github at yahoo.fr>
+ * @author Raphaël Calabro (ddaeke-github at yahoo.fr)
  */
 public abstract class HttpServlet implements HttpRequestHandler {
 
@@ -62,6 +62,7 @@ public abstract class HttpServlet implements HttpRequestHandler {
      *
      * @param request Requête GET HTTP.
      * @param response Réponse HTTP.
+     * @throws java.lang.Exception En cas d'erreur pendant le traitement de la requête.
      */
     public void doGet(HttpRequest request, HttpResponse response) throws Exception {
         // Pas d'action.
@@ -72,6 +73,7 @@ public abstract class HttpServlet implements HttpRequestHandler {
      *
      * @param request Requête POST HTTP.
      * @param response Réponse HTTP.
+     * @throws java.lang.Exception En cas d'erreur pendant le traitement de la requête.
      */
     public void doPost(HttpRequest request, HttpResponse response) throws Exception {
         // Pas d'action.
@@ -82,6 +84,7 @@ public abstract class HttpServlet implements HttpRequestHandler {
      *
      * @param request Requête HEAD HTTP.
      * @param response Réponse HTTP.
+     * @throws java.lang.Exception En cas d'erreur pendant le traitement de la requête.
      */
     public void doHead(HttpRequest request, HttpResponse response) throws Exception {
         // Pas d'action.
@@ -92,6 +95,7 @@ public abstract class HttpServlet implements HttpRequestHandler {
      *
      * @param request Requête OPTIONS HTTP.
      * @param response Réponse HTTP.
+     * @throws java.lang.Exception En cas d'erreur pendant le traitement de la requête.
      */
     public void doOptions(HttpRequest request, HttpResponse response) throws Exception {
         // Pas d'action.
@@ -102,6 +106,7 @@ public abstract class HttpServlet implements HttpRequestHandler {
      *
      * @param request Requête PUT HTTP.
      * @param response Réponse HTTP.
+     * @throws java.lang.Exception En cas d'erreur pendant le traitement de la requête.
      */
     public void doPut(HttpRequest request, HttpResponse response) throws Exception {
         // Pas d'action.
@@ -112,6 +117,7 @@ public abstract class HttpServlet implements HttpRequestHandler {
      *
      * @param request Requête TRACE HTTP.
      * @param response Réponse HTTP.
+     * @throws java.lang.Exception En cas d'erreur pendant le traitement de la requête.
      */
     public void doTrace(HttpRequest request, HttpResponse response) throws Exception {
         // Pas d'action.
@@ -122,6 +128,7 @@ public abstract class HttpServlet implements HttpRequestHandler {
      *
      * @param request Requête DELETE HTTP.
      * @param response Réponse HTTP.
+     * @throws java.lang.Exception En cas d'erreur pendant le traitement de la requête.
      */
     public void doDelete(HttpRequest request, HttpResponse response) throws Exception {
         // Pas d'action.

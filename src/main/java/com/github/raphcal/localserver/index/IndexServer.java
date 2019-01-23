@@ -5,7 +5,7 @@ import java.io.File;
 
 /**
  * Serveur d'index.
- * @author Raphaël Calabro <ddaeke-github at yahoo.fr>
+ * @author Raphaël Calabro (ddaeke-github at yahoo.fr)
  */
 public class IndexServer {
     

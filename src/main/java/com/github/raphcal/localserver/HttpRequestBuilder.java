@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
  * Gère la construction de requêtes HTTP à partir d'une connexion du serveur
  * local.
  *
- * @author Raphaël Calabro <ddaeke-github at yahoo.fr>
+ * @author Raphaël Calabro (ddaeke-github at yahoo.fr)
  */
 class HttpRequestBuilder {
 

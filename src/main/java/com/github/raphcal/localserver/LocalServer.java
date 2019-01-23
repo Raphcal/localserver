@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Classe permettant de simuler un serveur.
  *
- * @author Raphaël Calabro <ddaeke-github at yahoo.fr>
+ * @author Raphaël Calabro (ddaeke-github at yahoo.fr)
  */
 public class LocalServer {
 

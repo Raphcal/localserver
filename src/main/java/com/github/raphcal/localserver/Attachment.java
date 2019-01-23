@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 /**
  * Objets attachés à un client du serveur.
  *
- * @author Raphaël Calabro <ddaeke-github at yahoo.fr>
+ * @author Raphaël Calabro (ddaeke-github at yahoo.fr)
  */
 class Attachment {
 

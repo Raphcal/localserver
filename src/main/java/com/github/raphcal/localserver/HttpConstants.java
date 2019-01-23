@@ -3,7 +3,7 @@ package com.github.raphcal.localserver;
 /**
  * Liste des constantes du protocole HTTP.
  *
- * @author Raphaël Calabro <ddaeke-github at yahoo.fr>
+ * @author Raphaël Calabro (ddaeke-github at yahoo.fr)
  */
 public final class HttpConstants {
 

@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Représente une réponse HTTP.
  *
- * @author Raphaël Calabro <ddaeke-github at yahoo.fr>
+ * @author Raphaël Calabro (ddaeke-github at yahoo.fr)
  */
 public class HttpResponse extends AbstractHttpMessage {
 

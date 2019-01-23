@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Servlet listant le contenu d'un dossier.
  *
- * @author Raphaël Calabro <ddaeke-github at yahoo.fr>
+ * @author Raphaël Calabro (ddaeke-github at yahoo.fr)
  */
 public class DirectoryIndexHttpServlet extends HttpServlet {
 
@@ -218,7 +218,7 @@ public class DirectoryIndexHttpServlet extends HttpServlet {
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     @Override
     public void doGet(final HttpRequest request, final HttpResponse response) throws IOException {

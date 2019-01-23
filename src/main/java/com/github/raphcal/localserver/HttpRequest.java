@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Représente une requête HTTP.
  *
- * @author Raphaël Calabro <ddaeke-github at yahoo.fr>
+ * @author Raphaël Calabro (ddaeke-github at yahoo.fr)
  */
 public class HttpRequest extends AbstractHttpMessage {
 
