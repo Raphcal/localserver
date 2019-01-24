@@ -2,6 +2,7 @@ package com.github.raphcal.localserver;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -101,7 +102,7 @@ class Server implements Runnable {
                                 key.cancel();
 
                             } else if (bytes > 0) {
-                                buffer.flip();
+                                ((Buffer)buffer).flip();
                                 attachment.getRequestBuilder().feedBytes(buffer);
                                 buffer.compact();
                             }
