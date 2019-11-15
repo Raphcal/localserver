@@ -26,6 +26,7 @@ public class IndexServer {
 		
 		final LocalServer localServer = new LocalServer(8787, servlet);
 		localServer.start();
+        System.out.println("Server started on " + localServer.getEndpoint());
 	}
     
 }

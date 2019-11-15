@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Classe permettant de simuler un serveur.
+ * Local server.
  *
  * @author Raphaël Calabro (ddaeke-github at yahoo.fr)
  */
@@ -19,12 +19,9 @@ public class LocalServer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalServer.class);
 
-    /**
-     * Constante utilisée pour convertir des millisecondes en secondes.
-     */
     private static final double MILLISECONDS = 1000.0;
 
-    private final InetSocketAddress endpoint;
+    private final Server server;
     private final HttpRequestHandler servlet;
     private final Thread serverThread;
 
@@ -35,63 +32,67 @@ public class LocalServer {
     private final Semaphore startSemaphore = new Semaphore(1);
 
     /**
-     * Créé un nouveau serveur prêt à écouter sur le port donné.
+     * Creates a new server.
+     * <p>
+     * The server will try to bind to given port. If the port is occupied, the
+     * server will try on the next port and so on until the connection succeed.
      *
-     * @param port Port à écouter.
-     * @param servlet Actions a effectuer lors de la réception d'une requête
-     * HTTP.
+     * @param port Port to bind to.
+     * @param servlet Servlet to use for handling http requests.
      * @see HttpServlet
      */
     public LocalServer(int port, HttpRequestHandler servlet) {
-        this.endpoint = new InetSocketAddress(port);
         this.servlet = servlet;
-        this.serverThread = new Thread(new Server(servlet, endpoint, runningLock, startSemaphore));
+        this.server = new Server(servlet, port, runningLock, startSemaphore);
+        this.serverThread = new Thread(server);
     }
 
     /**
-     * Démarre le serveur dans un thread séparé.
+     * Start the server in a new thread.
+     * This method blocks until the server is started.
      */
     public void start() {
         if (!serverThread.isAlive()) {
-            LOGGER.info("Démarrage d'un serveur local à l'adresse " + endpoint + "...");
+            LOGGER.info("Starting server thread...");
             startTime = new Date().getTime();
             serverThread.start();
             try {
                 startSemaphore.acquire();
             } catch (InterruptedException ex) {
-                LOGGER.error("Interruption pendant l'attente du démarrage du serveur.", ex);
+                LOGGER.error("Server start has been interrupted.", ex);
             }
+            LOGGER.info("Server listening on " + server.getEndpoint());
         } else {
-            LOGGER.warn("Le serveur est déjà démarré.");
+            LOGGER.warn("Server is already started and listening on " + server.getEndpoint());
         }
     }
 
     /**
-     * Arrête le serveur et libère le port.
+     * Stop the server.
      */
     public void stop() {
         if (serverThread != null) {
-            LOGGER.info("Arrêt du serveur local " + endpoint + "...");
+            LOGGER.info("Stopping server " + server.getEndpoint() + "...");
             serverThread.interrupt();
 
             synchronized (runningLock) {
                 final double totalTime = (new Date().getTime() - startTime) / MILLISECONDS;
-                LOGGER.info("Serveur local arrêté (temps d'exécution total : " + totalTime + "s).");
+                LOGGER.info("Server stopped (total execution time : " + totalTime + "s).");
             }
         } else {
-            LOGGER.warn("Le serveur n'est pas démarré.");
+            LOGGER.warn("Server is not started.");
         }
     }
 
     /**
-     * Programme l'arrêt après l'écoulement du temps spécifié.
+     * Stop the server after the specified delay.
      *
-     * @param delay Durée.
-     * @param unit Unité de la durée.
+     * @param delay Delay.
+     * @param unit Duration unit.
      */
     public void stop(long delay, TimeUnit unit) {
         if (stopping.compareAndSet(false, true)) {
-            LOGGER.info("Le serveur s'arrêtera dans " + delay + ' ' + unit.name().toLowerCase() + '.');
+            LOGGER.info("Server will stop in " + delay + ' ' + unit.name().toLowerCase() + '.');
 
             final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
             executorService.schedule(new Runnable() {
@@ -107,11 +108,21 @@ public class LocalServer {
     }
 
     /**
-     * Récupère l'objet gérant les requêtes HTTP.
+     * Returns the servlet handling http requests.
      *
-     * @return L'objet gérant les requêtes HTTP.
+     * @return Servlet instance handling http requests.
      */
     public HttpRequestHandler getServlet() {
         return servlet;
+    }
+    
+    /**
+     * Address bound to the server.
+     * Will be null if the server is not running.
+     *
+     * @return Address bound to the server.
+     */
+    public InetSocketAddress getEndpoint() {
+        return server.getEndpoint();
     }
 }

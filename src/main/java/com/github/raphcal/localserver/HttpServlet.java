@@ -13,6 +13,9 @@ import java.nio.charset.Charset;
  */
 public abstract class HttpServlet implements HttpRequestHandler {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void handleRequest(final HttpRequest request, final HttpResponse response) {
         final Method method = Method.valueOf(request.getMethod());
