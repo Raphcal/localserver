@@ -52,6 +52,8 @@ public class HttpResponse extends AbstractHttpMessage {
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
 
+    // TODO: Add a way to use an Inputstream or a Reader for the body.
+
     /**
      * La réponse est initialisée avec les propriétés suivantes :
      * <ul>

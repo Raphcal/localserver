@@ -150,14 +150,13 @@ class Server implements Runnable {
     }
 
     private void writeData(final SelectionKey key) throws IOException {
-        final SocketChannel channel = (SocketChannel) key.channel();
-        final Attachment attachment = (Attachment) key.attachment();
-        
-        // TODO: Ecrire le retour contenu dans l'attachement et
-        // fermer la connexion ensuite.
-        channel.write(ByteBuffer.wrap(attachment.getResponse().toByteArray()));
-        
-        channel.close();
+        try (SocketChannel channel = (SocketChannel) key.channel()) {
+            final Attachment attachment = (Attachment) key.attachment();
+            final ByteBuffer buffer = ByteBuffer.wrap(attachment.getResponse().toByteArray());
+            while (buffer.hasRemaining()) {
+                channel.write(buffer);
+            }
+        }
         key.cancel();
     }
 
