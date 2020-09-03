@@ -1,6 +1,11 @@
 # Changelog
 
-## [2.0.1]
+## [2.1.0] - 2020-09-03
+### Added
+- Added an adapter to use instances of `com.github.raphcal.localserver.HttpServlet`
+  with `com.sun.net.httpserver.HttpServer`.
+
+## [2.0.1] - 2020-04-23
 ### Added
 - Added a changelog.
 
