@@ -20,14 +20,14 @@ public class HttpHandlerAdapter implements HttpHandler {
     /**
      * Servlet to adapt into an HttpHandler.
      */
-    private final HttpServlet servlet;
+    private final HttpRequestHandler servlet;
 
     /**
      * Creates a new adapter for the given servlet.
      *
      * @param servlet Servlet to adapt into an HttpHandler.
      */
-    public HttpHandlerAdapter(HttpServlet servlet) {
+    public HttpHandlerAdapter(HttpRequestHandler servlet) {
         this.servlet = servlet;
     }
 

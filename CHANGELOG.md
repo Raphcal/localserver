@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.2.0] - 2020-09-04
+### Added
+- It is now possible to select a server type between LocalServer's own
+  implementation or Sun's implementation.
+
 ## [2.1.0] - 2020-09-03
 ### Added
 - Added an adapter to use instances of `com.github.raphcal.localserver.HttpServlet`

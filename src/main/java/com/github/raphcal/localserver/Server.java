@@ -56,10 +56,9 @@ class Server implements Runnable {
     @Override
     public void run() {
         synchronized (runningLock) {
-            try (final ServerSocketChannel serverChannel = ServerSocketChannel.open();
-                    final Selector selector = Selector.open()) {
+            try (final ServerSocketChannel serverChannel = ServerSocketChannel.open(); final Selector selector = Selector.open()) {
                 startServer(serverChannel, selector);
-                
+
                 while (!Thread.currentThread().isInterrupted()) {
                     handleIO(selector);
                 }
@@ -68,11 +67,11 @@ class Server implements Runnable {
             }
         }
     }
-    
+
     public InetSocketAddress getEndpoint() {
         return endpoint;
     }
-    
+
     private void startServer(ServerSocketChannel serverChannel, Selector selector) throws ClosedChannelException, IOException {
         serverChannel.configureBlocking(false);
         while (endpoint == null) {
@@ -91,13 +90,13 @@ class Server implements Runnable {
 
     private void handleIO(final Selector selector) throws IOException {
         selector.select();
-        
+
         final Set<SelectionKey> keys = selector.selectedKeys();
         final Iterator<SelectionKey> keyIterator = keys.iterator();
         while (keyIterator.hasNext()) {
             final SelectionKey key = keyIterator.next();
             keyIterator.remove();
-            
+
             if (key.isAcceptable()) {
                 acceptClient(key, selector);
             } else if (key.isReadable()) {
@@ -110,47 +109,47 @@ class Server implements Runnable {
 
     private void acceptClient(final SelectionKey key, final Selector selector) throws IOException, ClosedChannelException {
         final ServerSocketChannel server = (ServerSocketChannel) key.channel();
-        
+
         final SocketChannel channel = server.accept();
         channel.configureBlocking(false);
-        
+
         channel.register(selector, SelectionKey.OP_READ, new Attachment());
     }
 
     private void readData(final SelectionKey key) throws IOException {
         final SocketChannel channel = (SocketChannel) key.channel();
-        
+
         // TODO: Mettre en cache la requête jusqu'à lecture
         // complète. Quand OK, délégation au servlet puis
         // modification de l'intérêt en écriture.
         final Attachment attachment = (Attachment) key.attachment();
         final ByteBuffer buffer = attachment.getBuffer();
         int bytes = channel.read(buffer);
-        
+
         if (bytes == -1) {
             // Fermeture du flux
             channel.close();
             key.cancel();
-            
+
         } else if (bytes > 0) {
-            ((Buffer)buffer).flip();
+            ((Buffer) buffer).flip();
             attachment.getRequestBuilder().feedBytes(buffer);
             buffer.compact();
         }
-        
+
         if (attachment.getRequestBuilder().isReady()) {
             final HttpRequest request = attachment.getRequestBuilder().getRequest();
             final HttpResponse response = attachment.getResponse();
             response.configureDefaults();
-            
+
             servlet.handleRequest(request, response);
-            
+
             key.interestOps(SelectionKey.OP_WRITE);
         }
     }
 
     private void writeData(final SelectionKey key) throws IOException {
-        try (SocketChannel channel = (SocketChannel) key.channel()) {
+        try (final SocketChannel channel = (SocketChannel) key.channel()) {
             final Attachment attachment = (Attachment) key.attachment();
             final ByteBuffer buffer = ByteBuffer.wrap(attachment.getResponse().toByteArray());
             while (buffer.hasRemaining()) {
