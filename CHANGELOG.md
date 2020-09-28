@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.3.0] - 2020-09-28
+### Fixed
+- Charset is not added to the `Content-Type` header anymore when the mime type is set but not the charset.
+
 ## [2.2.0] - 2020-09-04
 ### Added
 - It is now possible to select a server type between LocalServer's own

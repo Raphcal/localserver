@@ -24,7 +24,7 @@ abstract class AbstractHttpMessage {
 
     private String version;
     private final HashMap<String, String> headers = new HashMap<String, String>();
-    private Charset charset = Charset.defaultCharset();
+    private Charset charset;
     private String contentType;
     private String formBoundary;
     private final ByteArrayOutputStream contentBuilder = new ByteArrayOutputStream();
@@ -71,7 +71,6 @@ abstract class AbstractHttpMessage {
     }
 
     protected Map<String, String> parseHeaderValue(String value) {
-
         if (value == null) {
             return null;
         }
@@ -186,7 +185,7 @@ abstract class AbstractHttpMessage {
      * Content-Type et Content-Length.
      */
     public void appendContent(String content, boolean refresh) {
-        appendContent(content.getBytes(charset), refresh);
+        appendContent(content.getBytes(getCharset()), refresh);
     }
 
     /**
@@ -229,6 +228,7 @@ abstract class AbstractHttpMessage {
      * @see #getCharset()
      */
     public String getContent() {
+        final Charset charset = getCharset();
         String content = null;
         try {
             content = contentBuilder.toString(charset.displayName());
@@ -285,7 +285,7 @@ abstract class AbstractHttpMessage {
      * @return L'encodage du contenu.
      */
     public Charset getCharset() {
-        return charset;
+        return charset != null ? charset : Charset.defaultCharset();
     }
 
     /**
