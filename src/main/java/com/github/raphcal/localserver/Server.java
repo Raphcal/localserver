@@ -62,7 +62,7 @@ class Server implements Runnable {
                 while (!Thread.currentThread().isInterrupted()) {
                     handleIO(selector);
                 }
-            } catch (IOException ex) {
+            } catch (IOException | RuntimeException ex) {
                 LOGGER.error("An unexpected error happened for server " + endpoint, ex);
             }
         }
