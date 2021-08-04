@@ -14,22 +14,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Servlet listant le contenu d'un dossier.
+ * List the content of a given directory and its children.
  *
  * @author Raphaël Calabro (ddaeke-github at yahoo.fr)
  */
 public class DirectoryIndexHttpServlet extends HttpServlet {
 
     /**
-     * Dossier racine du serveur.
+     * Root directory.
      */
-    private File serverRoot;
+    private final File serverRoot;
 
+    /**
+     * MIME types.
+     */
     private final Map<String, String> mimeTypes;
 
-    public DirectoryIndexHttpServlet() {
-        mimeTypes = new HashMap<String, String>();
-        // Liste tirée de https://msdn.microsoft.com/en-us/library/bb742440.aspx
+    public DirectoryIndexHttpServlet(File serverRoot) throws IOException {
+        this.mimeTypes = createMimeTypeMap();
+        this.serverRoot = serverRoot.getCanonicalFile();
+    }
+
+    private Map<String, String> createMimeTypeMap() {
+        final HashMap<String, String> mimeTypes = new HashMap<>();
+        // MIME type list from https://msdn.microsoft.com/en-us/library/bb742440.aspx
         mimeTypes.put("323", "text/h323");
         mimeTypes.put("acx", "application/internet-property-stream");
         mimeTypes.put("ai", "application/postscript");
@@ -215,6 +223,7 @@ public class DirectoryIndexHttpServlet extends HttpServlet {
         mimeTypes.put("xwd", "image/x-xwindowdump");
         mimeTypes.put("z", "application/x-compress");
         mimeTypes.put("zip", "application/zip");
+        return mimeTypes;
     }
 
     /**
@@ -228,11 +237,14 @@ public class DirectoryIndexHttpServlet extends HttpServlet {
                 final URL url = new URL(target);
                 target = url.getPath();
             } catch (MalformedURLException e) {
-                // TODO: Gérer l'exception.
+                response.setStatusCode(400);
+                response.setStatusMessage("Bad Request");
+                response.setContent("Given path is unsupported: " + target);
+                return;
             }
         }
-        final File file = new File(serverRoot, target);
-        if (!file.exists()) {
+        final File file = new File(serverRoot, target).getCanonicalFile();
+        if (!file.exists() || !file.getPath().startsWith(serverRoot.getPath())) {
             response.setStatusCode(404);
             response.setStatusMessage("NOT FOUND");
             return;
@@ -247,7 +259,7 @@ public class DirectoryIndexHttpServlet extends HttpServlet {
                     .append(target)
                     .append("</h1><hr/><pre>");
 
-            final ArrayList<String> children = new ArrayList<String>();
+            final ArrayList<String> children = new ArrayList<>();
 
             if (target.length() > 1) {
                 children.add("../");
@@ -289,10 +301,6 @@ public class DirectoryIndexHttpServlet extends HttpServlet {
                 outputStream.close();
             }
         }
-    }
-
-    public void setServerRoot(final File serverRoot) {
-        this.serverRoot = serverRoot;
     }
 
     private String getContentType(final File file) {
