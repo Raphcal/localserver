@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.4.0] - 2021-08-04
+## Added
+- Added method `startServerOnRandomPort` to start a new server on a random port
+  and handle retries.
+
+## Changed
+- Method `handleRequest` of `HttpServlet` is no longer `final` and can be overridden.
+
+## Fixed
+- Ignoring headers with `null` values.
+
 ## [2.3.0] - 2020-09-28
 ### Fixed
 - Charset is not added to the `Content-Type` header anymore when the mime type is set but not the charset.

@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Classe utilitaire pour simplifier l'écriture d'un servlet HTTP utilisable
@@ -14,10 +16,15 @@ import java.nio.charset.Charset;
 public abstract class HttpServlet implements HttpRequestHandler {
 
     /**
+     * Journalisation.
+     */
+    private  final Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
      * {@inheritDoc}
      */
     @Override
-    public final void handleRequest(final HttpRequest request, final HttpResponse response) {
+    public void handleRequest(final HttpRequest request, final HttpResponse response) {
         final Method method = Method.valueOf(request.getMethod());
 
         try {
@@ -49,6 +56,7 @@ public abstract class HttpServlet implements HttpRequestHandler {
                     break;
             }
         } catch (final Exception e) {
+            logger.error("An uncaught error happened while handling request " + request.getMethod() + " to " + request.getTarget(), e);
             response.setStatusCode(500);
             response.setStatusMessage("INTERNAL SERVER ERROR");
 

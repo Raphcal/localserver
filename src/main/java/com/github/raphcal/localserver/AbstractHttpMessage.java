@@ -345,6 +345,9 @@ abstract class AbstractHttpMessage {
         outputStream.write((int) '\n');
 
         for (final Map.Entry<String, String> header : getHeaders()) {
+            if (header.getValue() == null) {
+                continue;
+            }
             writeStringInAscii(outputStream, header.getKey());
             outputStream.write((int) ':');
             outputStream.write((int) ' ');
